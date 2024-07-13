@@ -74,17 +74,42 @@ function App() {
     <div className='w-full h-screen flex items-center justify-center'>
       <div className='text-white px-6 flex flex-col flex-wrap gap-5'>
       <h1 className='text-center text-xl font-bold text-[#565465]'>Password Generator</h1>
-      <div className='bg-[#24232B] flex items-center py-3 px-6'>
-        <input className='bg-transparent outline-none' type="text" value={password} placeholder='Password' readOnly
+      <div className='bg-[#24232B] flex items-center py-3 px-6 min-w-[290px]'>
+        <input className='w-full bg-transparent outline-none' type="text" value={password} placeholder='Password' readOnly
         ref={passwordRef}/>
         <div onClick={copyPass} className='text-xl text-[#6cf77c] cursor-pointer hover:text-zinc-500'><FaRegCopy /></div>
       </div>
-      <div className='bg-[#24232B] flex flex-col gap-4 py-5 px-6'>
+      <div className='bg-[#24232B] flex flex-col gap-4 py-5 px-6 min-w-[290px]'>
         <div className='flex flex-col gap-3'>
           <div className='flex flex-col gap-3'> 
             <div className='flex justify-between'>
               <h3>Character length</h3>
-              <h3 className='text-[#6cf77c]'>{length}</h3>
+              {/* <h3 className='text-[#6cf77c]'>{length}</h3> */}
+              <input
+                className='w-12 text-center outline-none text-black'
+                type="number"
+                value={length}
+                min={4}
+                max={20}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value === "") {
+                    setLength("");
+                  } else if (value >= 4 && value <= 20) {
+                    setLength(Number(value));
+                  } else if (value < 4) {
+                    setLength(4);
+                  } else if (value > 20) {
+                    setLength(20);
+                  }
+                }}
+                onBlur={(e) => {
+                  // Set to min value if the input is empty when losing focus
+                  if (e.target.value === "") {
+                    setLength(4);
+                  }
+                }}
+              />
             </div>
             <input className='w-full accent-[#6cf77c] outline-none border-2 border-red-800' 
             type="range" min={4} max={20} value={length} 
